@@ -1,0 +1,14 @@
+[workspace]
+members = [
+    "crates/frame",
+    "crates/ui-wasm",
+    "crates/tauri",
+]
+
+[profile.release]
+lto = true
+strip = true
+opt-level = "z"
+codegen-units = 1
+panic = "abort"
+incremental = false

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <!-- these registry entries should be installed to the target user's machine -->
+    <DirectoryRef Id="TARGETDIR">
+      <!-- groups together the registry entries to be installed -->
+      <!-- Note the unique `Id` we provide here -->
+      <Component Id="MyFragmentRegistryEntries" Guid="*">
+        <!-- the registry key willbe under HKEY_CURRENT_USER\Software\MyCompany\MyApplicationName -->
+        <!-- Tauri uses the second portion of the bundle identifier as the `MyCompany` name (e.g. `tauri-apps` in `com.tauri-apps.test`)  -->
+        <RegistryKey Root="HKCU" Key="Software\MyCompany\MyApplicationName" Action="createAndRemoveOnUninstall">
+          <!-- values to persist on the registry -->
+          <RegistryValue Type="integer" Name="SomeIntegerValue" Value="1" KeyPath="yes"/>
+          <RegistryValue Type="string" Value="Default Value"/>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+    <!-- 添加安装包 -->
+    <DirectoryRef Id="APPLICATIONROOTDIRECTORY">
+      <Component Id="network.manager.1379.exe">
+        <File Id="network.manager.1379.exe" Source="network-manager-1379.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="tauri.config.json">
+        <File Id="tauri.config.json" Source="tauri.config.json" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+    <!-- 告诉WIX安装的文件 -->
+    <Feature Id="MainApplication" Title="Main Application" Level="1">
+      <ComponentRef Id="tauri.config.json" />
+      <ComponentRef Id="network.manager.1379.exe" />
+    </Feature>
+  </Fragment>
+</Wix>
